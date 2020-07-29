@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="1.0">
+    <servlet>
+        <servlet-name>brasilprev</servlet-name>
+        <servlet-class>mysite.server</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>brasilprev</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Spring Security -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>
+                  org.springframework.web.filter.DelegatingFilterProxy
+                </filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- Configuracao do Spring -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/spring-security.xml, /WEB-INF/applicationContext.xml</param-value>
+	</context-param>
+	
+	<beans:beans xmlns="http://www.springframework.org/schema/security"
+			xmlns:beans="http://www.springframework.org/schema/beans"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://www.springframework.org/schema/beans
+			<http://www.springframework.org/schema/beans/spring-beans-3.0.xsd>
+			<http://www.springframework.org/schema/security>
+			<http://www.springframework.org/schema/security/spring-security-3.0.3.xsd>">
+		
+			<http auto-config="true">
+				<intercept-url pattern="/admin*" access="ADMIN_USER" />
+				<http-basic />
+			</http>
+		
+			<authentication-manager>
+			  <authentication-provider>
+			    <user-service>
+				<user name="admin" password="123456" authorities="ADMIN_USER" />
+			    </user-service>
+			  </authentication-provider>
+			</authentication-manager>
+	</beans:beans>
+	
+	<authentication-manager>
+	   <authentication-provider>
+		<jdbc-user-service data-source-ref="dataSource"
+
+		   users-by-username-query="
+		      select username,password, enabled
+		      from users where username=?"
+
+		   authorities-by-username-query="
+		      select u.username, ur.authority from users u, user_roles ur
+		      where u.user_id = ur.user_id and u.username =?  "
+
+		/>
+	   </authentication-provider>
+	</authentication-manager>
+	
+</web-app>
