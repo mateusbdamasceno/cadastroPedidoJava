@@ -1,4 +1,4 @@
-package br.com.brasilprev.beans.resource;
+package br.com.brasilprev.resource;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -6,13 +6,11 @@ import javax.ws.rs.core.Response.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import br.com.brasilprev.beans.PedidoItem;
 import br.com.brasilprev.enums.ExceptionMessageEnum;
 import br.com.brasilprev.service.CadastroService;
 import io.swagger.annotations.ApiOperation;
